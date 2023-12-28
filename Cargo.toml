@@ -1,10 +1,9 @@
 [package]
 name = "rs-args"
-version = "0.1.2"
+version = "0.1.3"
 description = "A simple command line argument parser for Rust"
 authors = ["Carl Neben <carl-neben@gmx.de>"]
 repository = "https://gihub.com/mt4f/rs-args"
-categories = ["cli", "parser"]
 keywords = [
     "data-structures", 
     "terminal", 

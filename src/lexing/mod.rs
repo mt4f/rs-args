@@ -25,7 +25,7 @@ pub struct Token {
 /// 3. Number: A number, such as "123".
 /// 4. Equals: The equals sign, used for key-value pairs.
 /// 5. Dash: The dash sign, used for flags.
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum TokenKind {
     Identifier,
     String,
@@ -118,3 +118,6 @@ fn tokenise_string(chars: &mut Vec<char>) -> Token {
 
     Token { kind: TokenKind::String, value }
 }
+
+#[cfg(test)]
+pub mod tests;
