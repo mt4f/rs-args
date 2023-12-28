@@ -12,6 +12,7 @@ use crate::msg;
 /// error reporting.
 ///
 #[derive(Debug)]
+#[allow(dead_code)] // TODO: Remove one the parser is implemented
 pub struct Token {
     kind: TokenKind,
     value: String,
@@ -41,7 +42,6 @@ pub fn tokenise(input: String) -> Vec<Token> {
         let result = match c {
             '-' => Some(Token { kind: TokenKind::Dash, value: chars.remove(0).to_string() }),
             '=' => Some(Token { kind: TokenKind::Equals, value: chars.remove(0).to_string() }),
-            '"' => Some(Token { kind: TokenKind::String, value: chars.remove(0).to_string() }),
             ' ' => {
                 chars.remove(0);
                 continue;
@@ -54,6 +54,7 @@ pub fn tokenise(input: String) -> Vec<Token> {
                 } else if *c == '"' {
                     Some(tokenise_string(&mut chars))
                 } else {
+                    println!("{}", c);
                     None
                 }
             }
@@ -103,6 +104,7 @@ fn tokenise_number(chars: &mut Vec<char>) -> Token {
 }
 
 fn tokenise_string(chars: &mut Vec<char>) -> Token {
+    chars.remove(0);
     let mut value = String::new();
 
     while let Some(c) = chars.first() {
