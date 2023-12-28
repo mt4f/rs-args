@@ -6,22 +6,10 @@ authors = ["Carl Neben <carl-neben@gmx.de>"]
 repository = "https://gihub.com/mt4f/rs-args"
 categories = ["cli", "parser"]
 keywords = [
-    "cli", 
-    "parser", 
-    "command line", 
+    "data-structures", 
+    "terminal", 
     "arguments", 
-    "args", 
-    "command line arguments", 
-    "command line parser", 
-    "command line argument parser", 
-    "command line args", 
-    "command line arguments parser", 
-    "command line args parser", 
-    "command line parser", 
-    "command line parser rust", 
-    "command line parser rustlang", 
-    "command line parser rust-lang", 
-    "command line"
+    "args"
 ]
 
 edition = "2021"
