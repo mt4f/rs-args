@@ -1,4 +1,6 @@
-use crate::msg;
+use self::errors::LexicalError;
+
+pub mod errors;
 
 /// A token is a single unit of a command, such as a word, number or symbol.
 /// This is used to convert single characters in a more machine-readable format.
@@ -18,6 +20,18 @@ pub struct Token {
     value: String,
 }
 
+impl Token {
+    pub fn get_kind(&self) -> &TokenKind {
+        &self.kind
+    }
+    pub fn get_value(&self) -> &String {
+        &self.value
+    }
+    pub fn unknown(c: &char) -> Token {
+        Token { kind: TokenKind::Unknown, value: c.to_string() }
+    }
+}
+
 /// As we are only implementing a very simple shell, we only need a few token
 /// kinds. These are the token kinds we are going to use:
 /// 1. Identifier: A word, such as "ls" or "echo".
@@ -32,41 +46,45 @@ pub enum TokenKind {
     Number,
     Equals,
     Dash,
+    Unknown,
 }
 
-pub fn tokenise(input: String) -> Vec<Token> {
+pub fn tokenise(input: String) -> Result<Vec<Token>, LexicalError> {
     let mut tokens: Vec<Token> = Vec::new();
     let mut chars = input.chars().collect::<Vec<char>>();
 
     while let Some(c) = chars.first() {
         let result = match c {
-            '-' => Some(Token { kind: TokenKind::Dash, value: chars.remove(0).to_string() }),
-            '=' => Some(Token { kind: TokenKind::Equals, value: chars.remove(0).to_string() }),
+            '-' => Ok(Token { kind: TokenKind::Dash, value: chars.remove(0).to_string() }),
+            '=' => Ok(Token { kind: TokenKind::Equals, value: chars.remove(0).to_string() }),
             ' ' => {
                 chars.remove(0);
                 continue;
             }
             _ => {
                 if c.is_numeric() {
-                    Some(tokenise_number(&mut chars))
+                    tokenise_number(&mut chars)
                 } else if c.is_alphabetic() {
-                    Some(tokenise_identifier(&mut chars))
+                    Ok(tokenise_identifier(&mut chars))
                 } else if *c == '"' {
-                    Some(tokenise_string(&mut chars))
+                    Ok(tokenise_string(&mut chars))
                 } else {
-                    println!("{}", c);
-                    None
+                    Ok(Token::unknown(c))
                 }
             }
         };
 
-        if result.is_none() {
-            panic!("{}", msg::ERR_LX_UNK_TOK);
+        if let Ok(value) = &result {
+            if let TokenKind::Unknown = value.get_kind() {
+                return Err(LexicalError::UnknownToken(String::from(value.get_value())));
+            }
+        } else {
+            return Err(result.err().unwrap());
         }
+
         tokens.push(result.unwrap());
     }
-
-    tokens
+    Ok(tokens)
 }
 
 fn tokenise_identifier(chars: &mut Vec<char>) -> Token {
@@ -82,7 +100,7 @@ fn tokenise_identifier(chars: &mut Vec<char>) -> Token {
 
     Token { kind: TokenKind::Identifier, value }
 }
-fn tokenise_number(chars: &mut Vec<char>) -> Token {
+fn tokenise_number(chars: &mut Vec<char>) -> Result<Token, LexicalError> {
     let mut value = String::new();
 
     let mut decimals = 0;
@@ -98,9 +116,9 @@ fn tokenise_number(chars: &mut Vec<char>) -> Token {
     }
 
     if decimals > 1 {
-        panic!("{}", msg::ERR_LX_INV_DEC_MUL_PT);
+        return Err(LexicalError::InvalidDecimalPoint(decimals));
     }
-    Token { kind: TokenKind::Number, value }
+    Ok(Token { kind: TokenKind::Number, value })
 }
 
 fn tokenise_string(chars: &mut Vec<char>) -> Token {

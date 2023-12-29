@@ -3,7 +3,7 @@ use crate::lexing::{ self, TokenKind };
 #[test]
 fn test_lexer_identifier() {
     let input = "asdf";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].kind, TokenKind::Identifier);
@@ -13,7 +13,7 @@ fn test_lexer_identifier() {
 #[test]
 fn test_lexer_number() {
     let input = "1234";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].kind, TokenKind::Number);
@@ -23,7 +23,7 @@ fn test_lexer_number() {
 #[test]
 fn test_lexer_string() {
     let input = "\"Hello, World!\"";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].kind, TokenKind::String);
@@ -33,7 +33,7 @@ fn test_lexer_string() {
 #[test]
 fn test_lexer_multiple() {
     let input = "1234 asdf \"Hello, World!\"";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 3);
     assert_eq!(tokens[0].kind, TokenKind::Number);
@@ -45,10 +45,10 @@ fn test_lexer_multiple() {
 }
 
 #[test]
-#[should_panic(expected = "Invalid decimal! Expected 1 decimal point, found multiple.")]
+#[should_panic(expected = "called `Result::unwrap()` on an `Err` value: InvalidDecimalPoint(2)")]
 fn test_lexer_invalid_decimal() {
     let input = "1234.567.890";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 1);
     assert_eq!(tokens[0].kind, TokenKind::Number);
@@ -56,10 +56,10 @@ fn test_lexer_invalid_decimal() {
 }
 
 #[test]
-#[should_panic(expected = "Invalid decimal! Expected 1 decimal point, found multiple.")]
+#[should_panic(expected = "called `Result::unwrap()` on an `Err` value: InvalidDecimalPoint(2)")]
 fn test_lexer_invalid_decimal_multiple() {
     let input = "1234.567.890 asdf";
-    let tokens = lexing::tokenise(String::from(input));
+    let tokens = lexing::tokenise(String::from(input)).unwrap();
 
     assert_eq!(tokens.len(), 2);
     assert_eq!(tokens[0].kind, TokenKind::Number);
