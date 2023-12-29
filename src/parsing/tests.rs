@@ -2,7 +2,7 @@
 fn test_parser_positional() {
     let input = "pos1 pos2 pos3    pos 4";
     let tokens = crate::lexing::tokenise(String::from(input)).unwrap();
-    let arguments = crate::parsing::parse(tokens).unwrap();
+    let arguments = crate::parsing::parse(tokens);
 
     assert_eq!(arguments.len(), 5);
     assert_eq!(arguments[0].value, Some(String::from("pos1")));
@@ -16,7 +16,7 @@ fn test_parser_positional() {
 fn test_parser_named() {
     let input = "-named1=value1 -named2=\"value2\" -named3=3.01";
     let tokens = crate::lexing::tokenise(String::from(input)).unwrap();
-    let arguments = crate::parsing::parse(tokens).unwrap();
+    let arguments = crate::parsing::parse(tokens);
 
     assert_eq!(arguments.len(), 3);
     assert_eq!(arguments[0].name, Some(String::from("named1")));
