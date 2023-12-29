@@ -21,7 +21,11 @@ impl CommandArguments {
     }
 
     pub fn default_new() -> Result<CommandArguments, LexicalError> {
-        let raw_arguments = std::env::args().collect::<Vec<String>>().join(" ");
+        let mut raw_arguments = std::env::args().collect::<Vec<String>>();
+        let raw_arguments = raw_arguments
+            .drain(1..)
+            .collect::<Vec<String>>()
+            .join(" ");
         let tokens = lexing::tokenise(raw_arguments);
         let arguments = parsing::parse(tokens?);
         Ok(CommandArguments::new(arguments))

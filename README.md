@@ -1,39 +1,46 @@
-# Readme ( rs-args )
-`rs-args` is a rust crate which enables developers to easily create
-command-line-interfaces using just rust. It enables command argument
-parsing by using the tools of a full-blown programming language. It is
-also actively being maintained as part of my "suite" of tools which
-makes my, and hopefully your, life as a software developer much easier.
+# rs-args
+![Static Badge](https://img.shields.io/badge/crates-io-f66a00?link=https%3A%2F%2Fcrates.io%2Fcrates%2Frs-args)
+***
+## Overview
+A simple, easy to use command argument parser for Rust.
 
-I am aware that there are probably much simpler solutions to this
-problem, but I decided to approach this my own way. 
+## Installation
+1. Initialise a cargo project ( you can skip this if you already have one )
+<div style="display: flex; justify-content: space-between; padding: 0 50px 0 50px;">
+<div>
 
-## Implementation
-Currently, this isn't quite done, so you can't really use it yet, but
-you can piece together the lexer and parse by yourself and use that to
-parse your arguments.
+```bash
+cargo init
+```
+</div>
+<div style="padding-top: 10px;">
+    <span style="color: #21ba79; font-weight: 700; margin-right: 4px">Created</span>binary (application) package
+</div>
+</div>
 
-### Step 1 - Lexical Analysis
-We first need to convert an input. This will be the command but wihout
-the program name ( `cargo init` -> `init`)
+2. Add `rs-args` as a dependeny
+<div style="padding: 0 50px 0 50px;">
 
+```toml
+rs-args = "<latest version>"
+```
+</div>
+
+## Usage
+Now that you installed `rs-args` in your cargo project, you have
+access to the `CommandArguments` struct. This is the main struct
+of the project, and it allows you to automatically parse arguments.
+
+You can call
 ```rust
-let input = "-key=value positional" // This should ( in theory ) produce
-                                    // two arguments: one named and one positional
+CommandArguments::default_new();
 ```
 
-Then, we need to convert that plain text into a more machine readable format - tokens.
-
+to retrieve the program arguments and parse them automaticaly, or
+you can call
 ```rust
-let tokens = rs_args::lexing::tokenize(String::from(input)).unwrap();
+CommandArgument::from_input("");
 ```
 
-### Step 2 - Syntactical Analysis
-This is where the actual magic happens. We can easily convert these tokens into arguments by doing as follows.
-```rust
-let arguments = rs_args::parsing::parse(tokens).unwrap();
-```
-
-## Contact
-If you have suggestions or complaints, feel free to open an issue or
-create a pull request, and I'll look into it.
+to input your own arguments, which you may have retrieved from the
+user.
