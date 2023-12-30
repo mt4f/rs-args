@@ -1,6 +1,6 @@
 fn main() {
-    let args = rs_args::CommandArguments::default_new();
-    for arg in args.unwrap().get_all() {
+    let args = rs_args::parse_arguments();
+    for arg in args {
         println!("{:?}", arg);
     }
 }

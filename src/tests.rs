@@ -1,4 +1,5 @@
 #[test]
+#[allow(deprecated)]
 fn test_cmd_args_positional() {
     let input = "pos1 pos2 pos3    pos 4";
     let arguments = crate::CommandArguments::from_input(input).unwrap();
@@ -12,6 +13,7 @@ fn test_cmd_args_positional() {
 }
 
 #[test]
+#[allow(deprecated)]
 fn test_cmd_args_named() {
     let input = "-named1=value1 -named2=\"value2\" -named3=3.01";
     let arguments = crate::CommandArguments::from_input(input).unwrap();

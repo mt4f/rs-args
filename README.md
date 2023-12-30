@@ -18,7 +18,7 @@ cargo init
 </div>
 </div>
 
-2. Add `rs-args` as a dependeny
+2. Add `rs-args` as a dependency
 <div style="padding: 0 50px 0 50px;">
 
 ```toml
@@ -28,19 +28,20 @@ rs-args = "<latest version>"
 
 ## Usage
 Now that you installed `rs-args` in your cargo project, you have
-access to the `CommandArguments` struct. This is the main struct
-of the project, and it allows you to automatically parse arguments.
+access to the `rs_args` module. This allows you to automatically parse arguments.
 
 You can call
 ```rust
-CommandArguments::default_new();
+let args = rs_args::parse_arguments();
 ```
 
 to retrieve the program arguments and parse them automaticaly, or
 you can call
 ```rust
-CommandArgument::from_input("");
+rs_args::get_named(...) 
+// or
+rs_args::get_positional(...)
+// etc.
 ```
 
-to input your own arguments, which you may have retrieved from the
-user.
+to directly retrieve the argument values.
