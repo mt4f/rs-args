@@ -1,6 +1,12 @@
 # rs-args
 ![Static Badge](https://img.shields.io/badge/crates-io-f66a00?link=https%3A%2F%2Fcrates.io%2Fcrates%2Frs-args)
 ***
+
+> Note, this repository has been archived in favor of the rs-toolbox equivalent.
+> You can find a similar implementation to this in the rs-toolbox project. This
+> repository is NOT being maintained and may contain security vulnerabilities and
+> undiscovered bugs.
+
 ## Overview
 A simple, easy to use command argument parser for Rust.
 
